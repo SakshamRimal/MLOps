@@ -1,0 +1,24 @@
+{
+  "model_name": "TelcoChurnClassifier",
+  "version": "2",
+  "run_id": "9c229b41bf86477aa6e049f5156b0f6e",
+  "run_name": "logreg_C10",
+  "selection_metric": "f1",
+  "selection_value": 0.6031746031746031,
+  "transitions": [
+    {
+      "model": "TelcoChurnClassifier",
+      "version": "2",
+      "to_stage": "Staging",
+      "from_run": "9c229b41bf86477aa6e049f5156b0f6e",
+      "final_stage": "Staging"
+    },
+    {
+      "model": "TelcoChurnClassifier",
+      "version": "2",
+      "to_stage": "Production",
+      "from_run": "9c229b41bf86477aa6e049f5156b0f6e",
+      "final_stage": "Production"
+    }
+  ]
+}

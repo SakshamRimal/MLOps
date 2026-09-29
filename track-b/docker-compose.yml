@@ -1,0 +1,122 @@
+services:
+  backend:
+    build:
+      context: .
+      target: backend
+    container_name: ai-assistant-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - VECTOR_DB_PATH=/app/data/chroma_db
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+    volumes:
+      - chroma_data:/app/data/chroma_db
+      - ./data/docs:/app/data/docs:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+
+  ui:
+    build:
+      context: .
+      target: ui
+    container_name: ai-assistant-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    restart: unless-stopped
+
+  # Optional: local Ollama for fallback provider
+  # Uncomment to enable local LLM inference
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ai-assistant-ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:11434/"]
+  #     interval: 30s
+  #     timeout: 5s
+  #     start_period: 60s
+  #     retries: 3
+  #   restart: unless-stopped
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  # Local LLM Fallback: Ollama (enabled with: docker compose --profile ollama up)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-assistant-ollama
+    profiles:
+      - ollama
+      - local-llm
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    restart: unless-stopped
+
+  # Local LLM Server: vLLM for high-throughput serving of Llama 3 / Mistral
+  # (enabled with: docker compose --profile vllm up)
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: ai-assistant-vllm
+    profiles:
+      - vllm
+    command: --model meta-llama/Meta-Llama-3-8B-Instruct --port 8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - huggingface_cache:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  chroma_data:
+    driver: local
+  # ollama_data:
+  #   driver: local
+  ollama_data:
+    driver: local
+  huggingface_cache:
+    driver: local

@@ -1,0 +1,102 @@
+[
+  {
+    "run_id": "b72ea40dc79146edb23e9c3f055bd85c",
+    "run_name": "logreg_C0.1",
+    "family": "logistic_regression",
+    "params": {
+      "C": 0.1,
+      "max_iter": 1000,
+      "solver": "lbfgs"
+    },
+    "metrics": {
+      "accuracy": 0.7998580553584103,
+      "precision": 0.6455696202531646,
+      "recall": 0.5454545454545454,
+      "f1": 0.591304347826087,
+      "roc_auc": 0.8410085509829756,
+      "average_precision": 0.6336990882538577,
+      "fit_seconds": 0.357
+    },
+    "model_uri": "runs:/b72ea40dc79146edb23e9c3f055bd85c/model"
+  },
+  {
+    "run_id": "9c229b41bf86477aa6e049f5156b0f6e",
+    "run_name": "logreg_C10",
+    "family": "logistic_regression",
+    "params": {
+      "C": 10.0,
+      "max_iter": 1000,
+      "solver": "lbfgs"
+    },
+    "metrics": {
+      "accuracy": 0.8048261178140526,
+      "precision": 0.6551724137931034,
+      "recall": 0.5588235294117647,
+      "f1": 0.6031746031746031,
+      "roc_auc": 0.8412384716732543,
+      "average_precision": 0.6281355522895387,
+      "fit_seconds": 0.254
+    },
+    "model_uri": "runs:/9c229b41bf86477aa6e049f5156b0f6e/model"
+  },
+  {
+    "run_id": "59fdcff705c744b490a997ba527cf1ea",
+    "run_name": "rf_depth6",
+    "family": "random_forest",
+    "params": {
+      "n_estimators": 200,
+      "max_depth": 6,
+      "min_samples_leaf": 10
+    },
+    "metrics": {
+      "accuracy": 0.7998580553584103,
+      "precision": 0.676923076923077,
+      "recall": 0.47058823529411764,
+      "f1": 0.555205047318612,
+      "roc_auc": 0.8430468366529746,
+      "average_precision": 0.6560177190462294,
+      "fit_seconds": 0.987
+    },
+    "model_uri": "runs:/59fdcff705c744b490a997ba527cf1ea/model"
+  },
+  {
+    "run_id": "46068d40b2e3499b9d8c47861419c2e9",
+    "run_name": "rf_depth16",
+    "family": "random_forest",
+    "params": {
+      "n_estimators": 200,
+      "max_depth": 16,
+      "min_samples_leaf": 2
+    },
+    "metrics": {
+      "accuracy": 0.7899219304471257,
+      "precision": 0.6373239436619719,
+      "recall": 0.4839572192513369,
+      "f1": 0.5501519756838906,
+      "roc_auc": 0.8343201839365524,
+      "average_precision": 0.6406436692070617,
+      "fit_seconds": 0.675
+    },
+    "model_uri": "runs:/46068d40b2e3499b9d8c47861419c2e9/model"
+  },
+  {
+    "run_id": "1f3e0e6dc5574426b265b572a2131910",
+    "run_name": "hgb_lr0.08",
+    "family": "hist_gradient_boosting",
+    "params": {
+      "max_iter": 300,
+      "learning_rate": 0.08,
+      "max_leaf_nodes": 31
+    },
+    "metrics": {
+      "accuracy": 0.7842441447835344,
+      "precision": 0.6067073170731707,
+      "recall": 0.5320855614973262,
+      "f1": 0.5669515669515669,
+      "roc_auc": 0.8214962928517915,
+      "average_precision": 0.6140872540552463,
+      "fit_seconds": 1.656
+    },
+    "model_uri": "runs:/1f3e0e6dc5574426b265b572a2131910/model"
+  }
+]

@@ -1,0 +1,14 @@
+myenv/
+vllm-env/
+__pycache__/
+*.pyc
+.env
+.git/
+.gitignore
+data/chroma_db/
+*.md
+tests/
+.pytest_cache/
+.dockerignore
+Dockerfile
+docker-compose.yml

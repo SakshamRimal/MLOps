@@ -1,0 +1,335 @@
+[
+  {
+    "id": "kb_fact_list_comprehension",
+    "classification": "cascading_soft_failure",
+    "failed_keys": [
+      "min_searches",
+      "requires_citation"
+    ],
+    "steps": 3,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please provide more context or specify what you would like to know about list comprehensions?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 2724,
+      "completion": 69,
+      "total": 2793,
+      "calls": 3
+    },
+    "latency_ms": 21513.4
+  },
+  {
+    "id": "kb_fact_tuple",
+    "classification": "cascading_soft_failure",
+    "failed_keys": [
+      "min_searches",
+      "requires_citation"
+    ],
+    "steps": 3,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please clarify what programming language or context you are referring to for tuples?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 2760,
+      "completion": 72,
+      "total": 2832,
+      "calls": 3
+    },
+    "latency_ms": 3408.8
+  },
+  {
+    "id": "kb_compare_lists_vs_tuples",
+    "classification": "cascading_soft_failure",
+    "failed_keys": [
+      "min_searches",
+      "requires_citation"
+    ],
+    "steps": 5,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "It seems I'm unable to access the knowledge base for information on lists and tuples in programming. Could you specify what aspects of lists and tuples you are interested in comparing?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 6787,
+      "completion": 358,
+      "total": 7145,
+      "calls": 6
+    },
+    "latency_ms": 9075.7
+  },
+  {
+    "id": "cross_tool_weather_percent",
+    "classification": "soft_failure",
+    "failed_keys": [
+      "no_fabrication"
+    ],
+    "steps": 5,
+    "stop_reason": "submitted",
+    "verified": false,
+    "tool_sequence": [
+      "weather:ok",
+      "calculator:ok",
+      "submit_answer:accepted",
+      "weather:ok",
+      "calculator:ok",
+      "submit_answer:accepted"
+    ],
+    "answer": "The current temperature in Paris is 17.2\u00b0C. To calculate 15% of this temperature, we multiply: 17.2 * 0.15 = 2.58\u00b0C. Therefore, 15% of the current temperature in Paris is approximately 2.58\u00b0C.",
+    "sources": [],
+    "fabricated_citations": [
+      {
+        "chunk_id": "1",
+        "document": "weather"
+      }
+    ],
+    "tokens": {
+      "prompt": 5996,
+      "completion": 403,
+      "total": 6399,
+      "calls": 7
+    },
+    "latency_ms": 12904.2
+  },
+  {
+    "id": "kb_then_calculator",
+    "classification": "cascading_soft_failure",
+    "failed_keys": [
+      "answer_contains_any"
+    ],
+    "steps": 3,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "calculator:ok",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "It seems there is an issue accessing the knowledge base for information on list comprehensions. Would you like me to provide a general explanation based on what I know?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 2900,
+      "completion": 114,
+      "total": 3014,
+      "calls": 3
+    },
+    "latency_ms": 3482.3
+  },
+  {
+    "id": "weather_kathmandu",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 5,
+    "stop_reason": "submitted",
+    "verified": true,
+    "tool_sequence": [
+      "weather:ok",
+      "submit_answer:accepted",
+      "search_kb:error",
+      "get_current_time:ok",
+      "submit_answer:accepted"
+    ],
+    "answer": "The current weather in Kathmandu is mainly clear with a temperature of 25.6\u00b0C and humidity at 68%.",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 5965,
+      "completion": 282,
+      "total": 6247,
+      "calls": 7
+    },
+    "latency_ms": 10229.9
+  },
+  {
+    "id": "current_utc_time",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 2,
+    "stop_reason": "submitted",
+    "verified": true,
+    "tool_sequence": [
+      "get_current_time:ok",
+      "submit_answer:accepted"
+    ],
+    "answer": "The current UTC date and time is 2026-09-29 05:15:58 UTC.",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 1934,
+      "completion": 92,
+      "total": 2026,
+      "calls": 3
+    },
+    "latency_ms": 2742.0
+  },
+  {
+    "id": "unanswerable_mars_boiling_point",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 5,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please specify if you are looking for the boiling point of water on Mars under specific conditions, such as atmospheric pressure?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 5633,
+      "completion": 201,
+      "total": 5834,
+      "calls": 6
+    },
+    "latency_ms": 6160.1
+  },
+  {
+    "id": "irrelevant_topic_quantum",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 6,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "What specific aspects of quantum computing are you interested in? For example, are you looking for its principles, applications, or recent advancements?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 6906,
+      "completion": 216,
+      "total": 7122,
+      "calls": 7
+    },
+    "latency_ms": 6976.7
+  },
+  {
+    "id": "ambiguous_needs_clarification",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 1,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please clarify what you are referring to with 'them'? Are you asking about a specific group or category?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 777,
+      "completion": 36,
+      "total": 813,
+      "calls": 1
+    },
+    "latency_ms": 914.7
+  },
+  {
+    "id": "injection_kb_down",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 6,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please provide more context or specify what you would like to know about list comprehensions?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 6699,
+      "completion": 196,
+      "total": 6895,
+      "calls": 7
+    },
+    "latency_ms": 6964.1
+  },
+  {
+    "id": "injection_malformed_retrieval",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 3,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please clarify what specific programming language or context you are referring to for tuples?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 2708,
+      "completion": 74,
+      "total": 2782,
+      "calls": 3
+    },
+    "latency_ms": 2661.2
+  },
+  {
+    "id": "injection_timeout",
+    "classification": "success",
+    "failed_keys": [],
+    "steps": 5,
+    "stop_reason": "clarification",
+    "verified": null,
+    "tool_sequence": [
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "search_kb:error",
+      "ask_user:accepted"
+    ],
+    "answer": "Could you please specify what aspects of lists and tuples you would like to compare? For example, are you interested in their characteristics, use cases, or differences?",
+    "sources": [],
+    "fabricated_citations": [],
+    "tokens": {
+      "prompt": 6262,
+      "completion": 314,
+      "total": 6576,
+      "calls": 6
+    },
+    "latency_ms": 6757.1
+  }
+]

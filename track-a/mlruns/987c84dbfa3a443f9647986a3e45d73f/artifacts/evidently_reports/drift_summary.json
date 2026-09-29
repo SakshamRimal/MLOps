@@ -1,0 +1,124 @@
+{
+  "run_id": "987c84dbfa3a443f9647986a3e45d73f",
+  "data_drift": {
+    "report": "data_drift_report.html",
+    "n_columns_scored": 20,
+    "drifted_columns": [
+      "tenure",
+      "MonthlyCharges",
+      "TotalCharges",
+      "Contract"
+    ],
+    "n_drifted": 4,
+    "drift_share": 0.2,
+    "column_scores": {
+      "tenure": {
+        "description": "Drift score is 0.21. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+        "drift_detected": true
+      },
+      "MonthlyCharges": {
+        "description": "Drift score is 0.46. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+        "drift_detected": true
+      },
+      "TotalCharges": {
+        "description": "Drift score is 0.15. The drift detection method is Wasserstein distance (normed). The drift threshold is 0.10.",
+        "drift_detected": true
+      },
+      "gender": {
+        "description": "Drift score is 0.01. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "SeniorCitizen": {
+        "description": "Drift score is 0.02. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "Partner": {
+        "description": "Drift score is 0.03. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "Dependents": {
+        "description": "Drift score is 0.03. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "PhoneService": {
+        "description": "Drift score is 0.03. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "MultipleLines": {
+        "description": "Drift score is 0.03. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "InternetService": {
+        "description": "Drift score is 0.03. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "OnlineSecurity": {
+        "description": "Drift score is 0.06. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "OnlineBackup": {
+        "description": "Drift score is 0.05. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "DeviceProtection": {
+        "description": "Drift score is 0.06. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "TechSupport": {
+        "description": "Drift score is 0.04. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "StreamingTV": {
+        "description": "Drift score is 0.04. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "StreamingMovies": {
+        "description": "Drift score is 0.05. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "Contract": {
+        "description": "Drift score is 0.12. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": true
+      },
+      "PaperlessBilling": {
+        "description": "Drift score is 0.03. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "PaymentMethod": {
+        "description": "Drift score is 0.05. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      },
+      "Churn": {
+        "description": "Drift score is 0.08. The drift detection method is Jensen-Shannon distance. The drift threshold is 0.10.",
+        "drift_detected": false
+      }
+    },
+    "n_tests": 21,
+    "n_tests_failed": 4
+  },
+  "target_drift": {
+    "report": "target_drift_report.html",
+    "churn_rate_reference": 0.2696,
+    "churn_rate_current": 0.3804,
+    "churn_rate_shift": 0.1108,
+    "target_drift_score": 0.08381649574146495,
+    "target_drift_detected": true,
+    "target_stattest_threshold": 0.05
+  },
+  "custom_metrics": {
+    "report": "custom_metrics_report.html",
+    "mean_monthly_charges_shift": 13.84344585584607,
+    "mtm_churn_rate_shift": 0.02568376602630884,
+    "limits": {
+      "mean_monthly_charges_shift_lt": 5.0,
+      "mtm_churn_rate_shift_lt": 0.03
+    },
+    "tests": {
+      "Mean MonthlyCharges shift (current vs reference): current=78.72, reference=64.88: Less 5.000": "FAIL",
+      "Churn-rate shift in Contract=Month-to-month segment: current=0.4584, reference=0.4327: Less 0.030": "SUCCESS"
+    },
+    "custom_test_passed": 0
+  },
+  "retrain_recommended": true,
+  "retrain_reason": "drift_share=0.200 >= 0.1"
+}

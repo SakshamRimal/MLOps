@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+openai
+chromadb
+sentence-transformers
+tiktoken
+pypdf
+httpx
+starlette>=0.37.2,<0.39.0
+streamlit
+requests

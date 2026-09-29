@@ -1,0 +1,131 @@
+Architecture: AI Assistant Production Deployment
+================================================
+
++---------------------------------------------------------------------+
+|                        Client (Browser)                             |
++-------------------------------+-------------------------------------+
+                                | HTTP
+                                v
++---------------------------------------------------------------------+
+|                     Streamlit UI (:8501)                            |
+|  +--------------+  +---------------------+  +--------------------+  |
+|  | Chat History |  | Mode Selector       |  | Backend Telemetry  |  |
+|  | + Controls   |  | (RAG / Tools /      |  | (Health, CB, Cache,|  |
+|  | (Temp, TopP) |  |  JSON / Research)   |  |  Docs, Latency)    |  |
+|  +--------------+  +---------------------+  +--------------------+  |
++-------------------------------+-------------------------------------+
+                                | HTTP (REST, Port 8000)
+                                v
++---------------------------------------------------------------------+
+|                  FastAPI Backend (:8000)                            |
+|                                                                     |
+|  +----------------------------------------------------------+      |
+|  |  Middleware Stack                                         |      |
+|  |  +------------------+ +-------------+ +---------------+  |      |
+|  |  | Request ID +     | | Rate        | | Error Handling|  |      |
+|  |  | Response Time    | | Limiter     | | (500/502/503) |  |      |
+|  |  | Tracking         | | (sliding)   | | (catch-all)   |  |      |
+|  |  +------------------+ +-------------+ +---------------+  |      |
+|  +----------------------------------------------------------+      |
+|                                                                     |
+|  +----------------------------------------------------------+      |
+|  |  Endpoints                                                |      |
+|  |  POST /chat            - Plain conversational LLM chat    |      |
+|  |  POST /chat/tools      - Function calling with tools      |      |
+|  |  POST /chat/rag        - RAG grounded chat with citations |      |
+|  |  POST /chat/structured - Strictly validated JSON response |      |
+|  |  POST /chat/research   - Agentic research loop (W16)      |      |
+|  |  POST /ingest          - Async background doc ingestion   |      |
+|  |  GET  /health          - Health, circuit state, & stats   |      |
+|  |  GET  /cache/stats     - Cache hit/miss/size stats        |      |
+|  |  POST /cache/invalidate- Clear response cache             |      |
+|  |  GET  /rag/documents   - List indexed document chunks     |      |
+|  +----------------------------------------------------------+      |
+|                                                                     |
+|  +----------------------------------------------------------+      |
+|  |  Agentic Loop (app/agent/)                                |      |
+|  |  POST /chat/research -> orchestrator.run_research()       |      |
+|  |  +--------------------+   +--------------------------+   |      |
+|  |  | Researcher loop    |-->| Tool runtime             |   |      |
+|  |  | (session.py)       |   | search_kb / weather /    |   |      |
+|  |  | bounded max_steps  |   | calculator / time        |   |      |
+|  |  | + EvidenceNotes    |   | submit_answer / ask_user |   |      |
+|  |  +---------+----------+   +--------------------------+   |      |
+|  |            | mode=multi                                 |      |
+|  |            v                                            |      |
+|  |  +--------------------+   +--------------------------+   |      |
+|  |  | Verifier agent     |-->| Isolated context:        |   |      |
+|  |  | (verifier.py)      |   | question + draft + notes |   |      |
+|  |  | max 2 rounds       |   | (PASS / FAIL / SKIPPED)  |   |      |
+|  |  +--------------------+   +--------------------------+   |      |
+|  |  mode=single: in-context self-check instead of verifier  |      |
+|  |  Failure injection: kb_down | malformed_retrieval |      |      |
+|  |                          timeout (per-request field)     |      |
+|  +----------------------------------------------------------+      |
+|                                                                     |
+|  +----------------------------------------------------------+      |
+|  |  LLM Client Layer (Resilience & Caching)                 |      |
+|  |  +----------------+ +-------------+ +------------------+  |      |
+|  |  | Retry +        | | Response    | | Circuit Breaker  |  |      |
+|  |  | Exp Backoff    | | Cache       | | (Closed, Open,   |  |      |
+|  |  | + Jitter       | | (LRU+TTL)   | |  Half-Open)      |  |      |
+|  |  +-------+--------+ +-------------+ +---------+--------+  |      |
+|  |          |                                       |        |      |
+|  |          v                                       v        |      |
+|  |  +------------------+                 +------------------+|      |
+|  |  | Primary LLM      |                 | Fallback LLM     ||      |
+|  |  | (OpenAI hosted)  |---------------->| (vLLM / Ollama)  ||      |
+|  |  +------------------+    on fail      +------------------+|      |
+|  +----------------------------------------------------------+      |
+|                                                                     |
+|  +----------------------------------------------------------+      |
+|  |  RAG Pipeline (app/rag/)                                 |      |
+|  |  +--------------+  +--------------+  +--------------+    |      |
+|  |  | Retriever    |  | VectorStore  |  | Ingest       |    |      |
+|  |  | (ChromaDB)   |  | (ChromaDB +  |  | (PDF/TXT/MD  |    |      |
+|  |  |              |  |  MiniLM)     |  |  chunking)   |    |      |
+|  |  +--------------+  +--------------+  +--------------+    |      |
+|  +----------------------------------------------------------+      |
++---------------------------------------------------------------------+
+                                |
+                                v
++---------------------------------------------------------------------+
+|              Persistent Storage (Docker Volumes)                     |
+|  +------------------+  +------------------+                        |
+|  | ChromaDB         |  | Document Store   |                        |
+|  | (vectors + meta) |  | (PDF/TXT/MD)     |                        |
+|  +------------------+  +------------------+                        |
++---------------------------------------------------------------------+
+
+Agentic loop control flow (POST /chat/research):
+  request --> orchestrator --> researcher loop (1 LLM decision per step)
+      search_kb / weather / calculator / get_current_time
+          -> full result recorded in EvidenceNotes
+          -> older tool messages replaced by one-line digests
+      submit_answer -> mode=single: in-context self-check
+                     -> mode=multi:  verifier agent (fresh context), <= 2 rounds
+      ask_user       -> stop_reason=clarification
+      step cap       -> forced synthesis from notes (stop_reason=max_steps)
+  citation ids are validated against the chunk ids actually retrieved.
+
+Reliability Features:
+  - Retry with exponential backoff and randomized jitter (3 attempts)
+  - Sliding window rate limiting (30 req/min per IP)
+  - Circuit breaker (trips after 5 failures, 30s recovery window)
+  - Automatic fallback provider failover (routes to vLLM/Ollama on error)
+  - Structured error responses (429, 500, 502, 503)
+  - Thread-safe LRU response caching with TTL (256 items, 300s TTL)
+  - Non-blocking async event loop with asyncio.to_thread for vector search
+  - Request ID correlation (X-Request-ID) and latency tracking (X-Response-Time)
+  - Bounded agent loop: max 6 iterations (hard cap 10), forced final synthesis
+  - Citation whitelist validation and tool-result clearing in the agent loop
+
+Deployment Options:
+  - docker compose up (standard backend + UI stack)
+  - docker compose --profile ollama up (with local Ollama fallback)
+  - docker compose --profile vllm up (with local vLLM server)
+  - Cloud: Azure Container Apps, AWS ECS Fargate, Google Cloud Run
+
+Evaluation:
+  - python3 eval/harness.py --base-url http://localhost:8000 --modes single,multi
+  - results: eval/results/results.json, eval/results/report.md

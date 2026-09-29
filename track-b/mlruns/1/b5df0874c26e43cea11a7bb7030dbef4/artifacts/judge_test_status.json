@@ -1,0 +1,10 @@
+[
+  [
+    "Mean value of 'faithfulness in list {'FAITHFUL'}': Greater or Equal 0.900",
+    "SUCCESS"
+  ],
+  [
+    "Mean value of 'answers_question in list {'PASS'}': Greater or Equal 0.900",
+    "SUCCESS"
+  ]
+]

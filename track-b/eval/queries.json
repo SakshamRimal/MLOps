@@ -1,0 +1,143 @@
+{
+  "max_steps": 6,
+  "queries": [
+    {
+      "id": "kb_fact_list_comprehension",
+      "category": "kb_fact",
+      "query": "According to the knowledge base, what is a list comprehension? Cite your source.",
+      "expect": {
+        "tools": ["search_kb"],
+        "min_searches": 1,
+        "requires_citation": true,
+        "no_fabrication": true,
+        "answer_contains_all": ["comprehension"]
+      }
+    },
+    {
+      "id": "kb_fact_tuple",
+      "category": "kb_fact",
+      "query": "According to the knowledge base, what is a tuple and how is one created? Cite your source.",
+      "expect": {
+        "tools": ["search_kb"],
+        "min_searches": 1,
+        "requires_citation": true,
+        "no_fabrication": true,
+        "answer_contains_all": ["tuple"]
+      }
+    },
+    {
+      "id": "kb_compare_lists_vs_tuples",
+      "category": "cross_source",
+      "query": "Compare what the knowledge base says about lists and about tuples. Which topic does it cover in more depth, and what evidence supports your conclusion? Cite your sources.",
+      "expect": {
+        "tools": ["search_kb"],
+        "min_searches": 2,
+        "requires_citation": true,
+        "no_fabrication": true,
+        "answer_contains_all": ["list", "tuple"]
+      }
+    },
+    {
+      "id": "cross_tool_weather_percent",
+      "category": "cross_tool",
+      "query": "What is 15% of the current temperature in Paris? Show the calculation.",
+      "expect": {
+        "tools": ["weather", "calculator"],
+        "no_fabrication": true,
+        "answer_regex": "-?\\d+(\\.\\d+)?"
+      }
+    },
+    {
+      "id": "kb_then_calculator",
+      "category": "cross_tool",
+      "query": "Look up what the knowledge base says about list comprehensions, then use the calculator to compute 12 * 12. Give me both results.",
+      "expect": {
+        "tools": ["search_kb", "calculator"],
+        "no_fabrication": true,
+        "answer_contains_any": ["144"]
+      }
+    },
+    {
+      "id": "weather_kathmandu",
+      "category": "tool_direct",
+      "query": "What is the current weather in Kathmandu?",
+      "expect": {
+        "tools": ["weather"],
+        "no_fabrication": true,
+        "answer_regex": "\\d"
+      }
+    },
+    {
+      "id": "current_utc_time",
+      "category": "tool_direct",
+      "query": "What is the current UTC date and time right now?",
+      "expect": {
+        "tools": ["get_current_time"],
+        "no_fabrication": true,
+        "answer_regex": "\\d{4}"
+      }
+    },
+    {
+      "id": "unanswerable_mars_boiling_point",
+      "category": "unanswerable",
+      "query": "According to the knowledge base, what is the boiling point of water on Mars? Cite your source.",
+      "expect": {
+        "tools": ["search_kb"],
+        "requires_refusal": true,
+        "no_fabrication": true
+      }
+    },
+    {
+      "id": "irrelevant_topic_quantum",
+      "category": "unanswerable",
+      "query": "What does the knowledge base say about quantum computing? Cite your source.",
+      "expect": {
+        "tools": ["search_kb"],
+        "requires_refusal": true,
+        "no_fabrication": true
+      }
+    },
+    {
+      "id": "ambiguous_needs_clarification",
+      "category": "clarification",
+      "query": "How many of them are there?",
+      "expect": {
+        "requires_clarification": true,
+        "no_fabrication": true
+      }
+    },
+    {
+      "id": "injection_kb_down",
+      "category": "failure_injection",
+      "inject_failure": "kb_down",
+      "query": "According to the knowledge base, what is a list comprehension? Cite your source.",
+      "expect": {
+        "tools": ["search_kb"],
+        "honest_failure": true,
+        "no_fabrication": true
+      }
+    },
+    {
+      "id": "injection_malformed_retrieval",
+      "category": "failure_injection",
+      "inject_failure": "malformed_retrieval",
+      "query": "According to the knowledge base, what is a tuple and how is one created? Cite your source.",
+      "expect": {
+        "tools": ["search_kb"],
+        "honest_failure": true,
+        "no_fabrication": true
+      }
+    },
+    {
+      "id": "injection_timeout",
+      "category": "failure_injection",
+      "inject_failure": "timeout",
+      "query": "Compare what the knowledge base says about lists and about tuples and cite your sources.",
+      "expect": {
+        "tools": ["search_kb"],
+        "honest_failure": true,
+        "no_fabrication": true
+      }
+    }
+  ]
+}
